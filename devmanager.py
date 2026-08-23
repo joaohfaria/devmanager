@@ -1,7 +1,23 @@
 VALID_PRIORITIES = ["Low", "Medium", "High"]
 
-tasks = []
-next_id = 1
+import json
+
+def save_tasks(tasks):
+    with open("tasks.json", "w") as file:
+        json.dump(tasks, file, indent=4)
+
+def load_tasks():
+    try:
+        with open("tasks.json", "r") as file:
+            return json.load(file)
+
+    except FileNotFoundError:
+        return []
+
+tasks = load_tasks()
+ids = [task["id"] for task in tasks]
+max_id = max(ids) if ids else 0
+next_id = max_id + 1
 
 def list_tasks(tasks):
     if not tasks:
@@ -86,8 +102,6 @@ def edit_task(tasks, task_id, field, new_value):
 
     return False
             
-   
-
 while True:
     print("\n=== DevManager ===")
     print("1 - Create Task")
@@ -110,6 +124,7 @@ while True:
         )
 
         tasks.append(new_task)
+        save_tasks(tasks)
         next_id += 1
 
         print(f"Task {new_task['id']} created successfully!")
@@ -122,11 +137,13 @@ while True:
             task_id = int(
                 input("Which task ID do you want to complete? ")
             )
-
+               
             task_finished = complete_task(tasks, task_id)
-
+            
             if task_finished:
                 print("Your task has been successfully completed.")
+                save_tasks(tasks)
+                
             else:
                 print("Task ID not found.")
 
@@ -148,6 +165,7 @@ while True:
 
                 if task_delete:
                     print("Task deleted successfully!")
+                    save_tasks(tasks)
                 else:
                     print("Task ID not found.")
 
@@ -171,6 +189,7 @@ while True:
 
             if task_edit:
                 print("Your task has been successfully edited.")
+                save_tasks(tasks)
             else:
                 print("Task ID not found.")
                   
