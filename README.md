@@ -1,71 +1,77 @@
 # DevManager
 
-DevManager is a command-line task manager built with Python.
-
-The project was created as part of my programming studies to practice Python fundamentals, code organization, functions, data structures, input validation, and Git/GitHub.
+A command-line task manager built with Python as a study project to practice
+programming fundamentals, code organization and version control.
 
 ## Features
 
-- Create tasks
-- List tasks
-- Complete tasks
-- Edit task title, description, or priority
-- Delete tasks
-- Task priorities: Low, Medium, and High
-- Input validation
-- Error handling for invalid task IDs
+- Create tasks with title, description and priority
+- List all tasks
+- Mark tasks as completed
+- Edit title, description or priority
+- Delete tasks with confirmation
+- Automatic ID assignment for each task
+- Three priority levels: Low, Medium, High
+- Data persistence with JSON — tasks are saved to a file and loaded on startup
+- Input validation and error handling for invalid IDs and empty fields
 
-## Technologies
+## Requirements
 
-- Python
-- Git
-- GitHub
+- Python 3
+
+No external dependencies.
 
 ## How to run
 
-Clone the repository:
-
 ```bash
 git clone https://github.com/joaohfaria/devmanager.git
-```
-
-Enter the project folder:
-
-```bash
 cd devmanager
-```
-
-Run the application:
-
-```bash
 python devmanager.py
 ```
 
-## Project status
+Tasks are stored in `tasks.json`, created automatically on first save.
 
-🚧 In development
+## How it works
+
+Each task is stored as a dictionary:
+
+```python
+{
+    "id": 1,
+    "title": "Study Python",
+    "description": "Review functions and dictionaries",
+    "priority": "High",
+    "status": "pending"
+}
+```
+
+All tasks are kept in a list, which is written to `tasks.json` after every
+operation that changes the data.
+
+## Project history
+
+The first version stored tasks in memory only. Every task was lost when the
+program was closed. To fix this, I implemented persistence with JSON, which
+required learning file handling, and handling the case where the data file
+does not exist yet.
+
+## Concepts practiced
+
+- Functions, parameters and return values
+- Lists, dictionaries and tuples
+- Loops and conditionals
+- Error handling with try/except
+- Reading and writing files
+- Working with JSON
+- Separation of responsibilities between functions
+- Version control with Git
+
+## Status
+
+In development. The project is being extended as I learn new concepts.
 
 ## Next steps
 
-- Save tasks using JSON
-- Load saved tasks when the application starts
-- Improve input validation
-- Improve project structure as new concepts are learned
-
-## What I'm practicing with this project
-
-- Functions
-- Parameters and return values
-- Lists
-- Dictionaries
-- Loops
-- Conditional statements
-- Error handling with `try` / `except`
-- Separation of responsibilities between functions
-- Git version control
-
-## Author
-
-**João Faria**
-
-GitHub: [@joaohfaria](https://github.com/joaohfaria)
+- Handle corrupted data files
+- Split the code into multiple modules
+- Filter and sort tasks
