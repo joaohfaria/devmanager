@@ -14,6 +14,10 @@ def load_tasks():
     except FileNotFoundError:
         return []
 
+    except json.JSONDecodeError:
+        print("Error: tasks.json is not a valid JSON file.")
+        return []
+
 tasks = load_tasks()
 ids = [task["id"] for task in tasks]
 max_id = max(ids) if ids else 0
@@ -98,9 +102,16 @@ def edit_task(tasks, task_id, field, new_value):
             elif field == "priority":
                 task["priority"] = new_value
 
+            else:
+                return False
+                # print("Invalid field. Please choose 'title', 'description', or 'priority'.")
+                
             return True
 
-    return False
+            
+
+    else:
+        return False
             
 while True:
     print("\n=== DevManager ===")
