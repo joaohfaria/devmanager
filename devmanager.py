@@ -90,8 +90,12 @@ def delete_task(tasks, task_id):
     return False
 
 def edit_task(tasks, task_id, field, new_value):
+    task_exists = False
+
     for task in tasks:
+
         if task["id"] == task_id:
+            task_exists = True
 
             if field == "title":
                 task["title"] = new_value
@@ -104,14 +108,14 @@ def edit_task(tasks, task_id, field, new_value):
 
             else:
                 return False
-                # print("Invalid field. Please choose 'title', 'description', or 'priority'.")
+                
                 
             return True
 
-            
+    if task_exists == False:
+        return False  
 
-    else:
-        return False
+   
             
 while True:
     print("\n=== DevManager ===")
@@ -189,6 +193,12 @@ while True:
     elif menu_option == "5":
         try:
             task_id = int(input("Which task do you want to edit?"))
+
+            existing_task = next((task for task in tasks if task["id"] == task_id), None)
+
+            if not existing_task:
+                print("Task ID not found.")
+                continue
 
             want_to_edit = input("Do you really want to edit this task? title/description/priority"
                                  ).strip().lower()
