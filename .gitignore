@@ -5,3 +5,4 @@ venv/
 .env
 tasks.json
 json_test.py
+tasks_backup_*.json
