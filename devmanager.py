@@ -1,10 +1,20 @@
 VALID_PRIORITIES = ["Low", "Medium", "High"]
 
+import os
 import json
 
 def save_tasks(tasks):
     with open("tasks.json", "w") as file:
         json.dump(tasks, file, indent=4)
+
+def create_backup():
+    backup_count = 1
+    while True:
+        backup_filename = f"tasks_backup_{backup_count}.json"
+        if not os.path.exists(backup_filename):
+            os.rename("tasks.json", backup_filename)
+            break
+        backup_count += 1
 
 def load_tasks():
     try:
@@ -15,13 +25,16 @@ def load_tasks():
         return []
 
     except json.JSONDecodeError:
-        print("Error: tasks.json is not a valid JSON file.")
+        create_backup()
+        print("Error: tasks.json is corrupted. A backup has been created.")
         return []
 
 tasks = load_tasks()
 ids = [task["id"] for task in tasks]
 max_id = max(ids) if ids else 0
 next_id = max_id + 1
+
+
 
 def list_tasks(tasks):
     if not tasks:
@@ -115,8 +128,6 @@ def edit_task(tasks, task_id, field, new_value):
     if task_exists == False:
         return False  
 
-   
-            
 while True:
     print("\n=== DevManager ===")
     print("1 - Create Task")
