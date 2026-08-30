@@ -120,13 +120,13 @@ def edit_task(tasks, task_id, field, new_value):
                 task["priority"] = new_value
 
             else:
-                return False
+                return "invalid_field"
                 
                 
-            return True
+            return "success"
 
     if task_exists == False:
-        return False  
+        return "id_not_found"
 
 while True:
     print("\n=== DevManager ===")
@@ -219,9 +219,11 @@ while True:
              
             task_edit = edit_task(tasks ,task_id, want_to_edit, new_value)
 
-            if task_edit:
+            if task_edit == "success":
                 print("Your task has been successfully edited.")
                 save_tasks(tasks)
+            elif task_edit == "invalid_field":
+                print("Invalid field. Please enter title, description, or priority.")
             else:
                 print("Task ID not found.")
                   
