@@ -1,10 +1,11 @@
-VALID_PRIORITIES = ["Low", "Medium", "High"]
-
 import os
 import json
 
+VALID_PRIORITIES = ["Low", "Medium", "High"]
+TASKS_FILE = "tasks.json"
+
 def save_tasks(tasks):
-    with open("tasks.json", "w") as file:
+    with open(TASKS_FILE, "w") as file:
         json.dump(tasks, file, indent=4)
 
 def create_backup():
@@ -12,13 +13,13 @@ def create_backup():
     while True:
         backup_filename = f"tasks_backup_{backup_count}.json"
         if not os.path.exists(backup_filename):
-            os.rename("tasks.json", backup_filename)
+            os.rename(TASKS_FILE, backup_filename)
             break
         backup_count += 1
 
 def load_tasks():
     try:
-        with open("tasks.json", "r") as file:
+        with open(TASKS_FILE, "r") as file:
             return json.load(file)
 
     except FileNotFoundError:
@@ -26,7 +27,7 @@ def load_tasks():
 
     except json.JSONDecodeError:
         create_backup()
-        print("Error: tasks.json is corrupted. A backup has been created.")
+        print(f"Error: {TASKS_FILE} is corrupted. A backup has been created.")
         return []
 
 tasks = load_tasks()
