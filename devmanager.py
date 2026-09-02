@@ -1,12 +1,16 @@
 import os
 import json
+import shutil
 
 VALID_PRIORITIES = ["Low", "Medium", "High"]
 TASKS_FILE = "tasks.json"
 
 def save_tasks(tasks):
+    rotate_backups()  
     with open(TASKS_FILE, "w") as file:
         json.dump(tasks, file, indent=4)
+
+     
 
 def create_backup():
     backup_count = 1
@@ -16,6 +20,19 @@ def create_backup():
             os.rename(TASKS_FILE, backup_filename)
             break
         backup_count += 1
+
+def rotate_backups():
+    if not os.path.exists(TASKS_FILE):
+        return
+
+    if os.path.exists("tasks_previous_2.json"):
+        os.replace("tasks_previous_2.json", "tasks_previous_3.json")
+
+    if os.path.exists("tasks_previous_1.json"):
+        os.replace("tasks_previous_1.json", "tasks_previous_2.json")        
+
+    shutil.copyfile(TASKS_FILE, "tasks_previous_1.json")
+
 
 def load_tasks():
     try:
