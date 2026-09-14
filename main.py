@@ -73,48 +73,38 @@ while True:
                 print("Invalid ID. Please enter a number.")
 
         case "5":
+        
             try:
                 task_id = int(input("Which task ID do you want to edit? "))
 
-                existing_task = next(
-                    (
-                        task
-                        for task in task_list
-                        if task["id"] == task_id
-                    ),
-                    None
-                )
+                existing_task = tasks.find_task(task_list, task_id)
 
                 if not existing_task:
                     print("Task ID not found.")
                     continue
 
                 field = input(
-                    "Enter the field to edit "
-                    "(title, description, priority): "
-                ).strip().lower()
+                "Enter the field to edit "
+                "(title, description, priority): "
+                    ).strip().lower()
 
-                new_value = input(
-                    "Enter the new value: "
-                ).strip()
+                new_value = input("Enter the new value: ").strip()
 
                 task_edit = tasks.edit_task(
-                    task_list,
-                    task_id,
-                    field,
-                    new_value
+                task_list,
+                task_id,
+                field,
+                new_value
                 )
 
                 if task_edit == "success":
                     print("Your task has been successfully edited.")
                     storage.save_tasks(task_list)
-
                 elif task_edit == "invalid_field":
                     print(
-                        "Invalid field. Please enter "
-                        "title, description, or priority."
-                    )
-
+                "Invalid field. Please enter "
+                "title, description, or priority."
+                )
                 else:
                     print("Task ID not found.")
 
